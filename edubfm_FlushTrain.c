@@ -71,7 +71,19 @@ Four edubfm_FlushTrain(
 	/* Error check whether using not supported functionality by EduBfM */
 	if (RM_IS_ROLLBACK_REQUIRED()) ERR(eNOTSUPPORTED_EDUBFM);
 
+    Four index;
+    Four e = edubfm_LookUp(trainId, type);
 
+    if (e == NOTFOUND_IN_HTABLE) ERR( eNOTFOUND_BFM );
+
+    index = e;
+
+    if (BI_BITS(type, index) & DIRTY) {
+        char* bufPtr = BI_BUFFER(type, index);
+        e = RDsM_WriteTrain(bufPtr, trainId, BI_BUFSIZE(type));
+        if (e < 0) ERR(e);
+        BI_BITS(type, index) ^= DIRTY;
+    }
 	
     return( eNOERROR );
 
