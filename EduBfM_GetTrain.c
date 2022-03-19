@@ -83,7 +83,29 @@ Four EduBfM_GetTrain(
     /* Is the buffer type valid? */
     if(IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);	
 
+    Four e = edubfm_LookUp(trainId, type);
 
+    /* Not exists in buffer pool */
+    if (e == NOTFOUND_IN_HTABLE) {
+        Four alloc_e = edubfm_AllocTrain(type);
+        if (alloc_e < 0) ERR(alloc_e);
+        
+        index = alloc_e;
+        char* aTrain = BI_BUFFER(type, index);
+        edubfm_ReadTrain(trainId, aTrain, type);
+
+        /* Update the element of bufTable corresponding to the allocated buffer element */
+
+
+        edubfm_Insert(trainId, index, type);
+
+        return (BI_BUFFER(type, index));
+    }
+
+    /* page/train to be fixed exists in bufferPool */
+    index = e;
+
+    /* Set the page bit to dirty */
 
     return(eNOERROR);   /* No error */
 
