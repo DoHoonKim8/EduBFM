@@ -83,7 +83,7 @@ Four EduBfM_GetTrain(
     /* Is the buffer type valid? */
     if(IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);	
 
-    Four e = edubfm_LookUp(trainId, type);
+    e = edubfm_LookUp(trainId, type);
 
     /* Not exists in buffer pool */
     if (e == NOTFOUND_IN_HTABLE) {

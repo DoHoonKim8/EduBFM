@@ -71,8 +71,7 @@ Four edubfm_FlushTrain(
 	/* Error check whether using not supported functionality by EduBfM */
 	if (RM_IS_ROLLBACK_REQUIRED()) ERR(eNOTSUPPORTED_EDUBFM);
 
-    Four index;
-    Four e = edubfm_LookUp(trainId, type);
+    e = edubfm_LookUp(trainId, type);
 
     if (e == NOTFOUND_IN_HTABLE) ERR( eNOTFOUND_BFM );
 

@@ -70,7 +70,6 @@ Four EduBfM_SetDirty(
     /*@ Is the paramter valid? */
     if (IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);
 
-    Four index;
     Four e = edubfm_LookUp(trainId, type);
 
     if (e == NOTFOUND_IN_HTABLE) ERR( eNOTFOUND_BFM );
