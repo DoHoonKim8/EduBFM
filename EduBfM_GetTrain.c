@@ -87,17 +87,22 @@ Four EduBfM_GetTrain(
 
     /* Not exists in buffer pool */
     if (e == NOTFOUND_IN_HTABLE) {
-        Four alloc_e = edubfm_AllocTrain(type);
-        if (alloc_e < 0) ERR(alloc_e);
+        e = edubfm_AllocTrain(type);
+        if (e < 0) ERR( e );
         
-        index = alloc_e;
+        index = e;
         char* aTrain = BI_BUFFER(type, index);
-        edubfm_ReadTrain(trainId, aTrain, type);
+        e = edubfm_ReadTrain(trainId, aTrain, type);
+        if (e < 0) ERR( e );
 
         /* Update the element of bufTable corresponding to the allocated buffer element */
+        BI_KEY(type, index).pageNo = trainId->pageNo;
+        BI_KEY(type, index).volNo = trainId->volNo;
+        BI_FIXED(type, index) = 1;
+        BI_BITS(type, index) = REFER;
 
-
-        edubfm_Insert(trainId, index, type);
+        e = edubfm_Insert(trainId, index, type);
+        if (e < 0) ERR( e );
 
         return (BI_BUFFER(type, index));
     }
