@@ -101,7 +101,7 @@ Four EduBfM_GetTrain(
         BI_FIXED(type, index) = 1;
         BI_BITS(type, index) = REFER;
 
-        e = edubfm_Insert(trainId, index, type);
+        e = edubfm_Insert(&BI_KEY(type, index), index, type);
         if (e < 0) ERR( e );
 
         return (BI_BUFFER(type, index));
@@ -109,8 +109,10 @@ Four EduBfM_GetTrain(
 
     /* page/train to be fixed exists in bufferPool */
     index = e;
+    BI_FIXED(type, index)++;
+    BI_FIXED(type, index) = REFER;
 
-    /* Set the page bit to dirty */
+    *retBuf = BI_BUFFER(type, index);
 
     return(eNOERROR);   /* No error */
 
