@@ -71,10 +71,11 @@ Four EduBfM_FreeTrain(
     if (e == NOTFOUND_IN_HTABLE) ERR( eNOTFOUND_BFM );
 
     index = e;
-
+    BI_FIXED(type, index)--;
 
     if (BI_FIXED(type, index) < 0) {
-
+        printf("Warning: Fixed counter is less than 0!!!\n");
+        BI_FIXED(type, index) = 0;
     }
     
     return( eNOERROR );
