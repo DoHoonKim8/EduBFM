@@ -130,9 +130,25 @@ Four edubfm_Delete(
 
     CHECKKEY(key);    /*@ check validity of key */
 
+    hashValue = BFM_HASH(key, type);
 
+    i = BI_HASHTABLEENTRY(type, hashValue);
+    prev = NIL;
+    if (i == NIL) ERR( eNOTFOUND_BFM );
+    
+    while (i) {
+        if (EQUALKEY(&BI_KEY(type, i), key)) break;
+        prev = i;
+        i = BI_NEXTHASHENTRY(type, i);
+    }
 
-    ERR( eNOTFOUND_BFM );
+    if (prev == NIL) {
+        BI_HASHTABLEENTRY(type, hashValue) = BI_NEXTHASHENTRY(type, i); 
+    } else {
+        BI_NEXTHASHENTRY(type, prev) = BI_NEXTHASHENTRY(type, i);
+    }
+
+    ERR( eNOERROR );
 
 }  /* edubfm_Delete */
 
