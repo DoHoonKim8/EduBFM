@@ -60,7 +60,33 @@ Four EduBfM_FlushAll(void)
     Two         i;                      /* index */
     Four        type;                   /* buffer type */
 
-    
+    type = PAGE_BUF;
+    i = 0;
+    while (i < BI_NBUFS(type)) {
+        if (BI_BITS(type, i) & DIRTY) {
+            TrainID* trainId;
+            trainId->pageNo = BI_KEY(type, i).pageNo;
+            trainId->volNo = BI_KEY(type, i).volNo;
+        
+            e = edubfm_FlushTrain(trainId, type);
+            if (e < 0) ERR( e );
+        }
+        i++;
+    }
+
+    type = LOT_LEAF_BUF;
+    i = 0;
+    while (i < BI_NBUFS(type)) {
+        if (BI_BITS(type, i) & DIRTY) {
+            TrainID* trainId;
+            trainId->pageNo = BI_KEY(type, i).pageNo;
+            trainId->volNo = BI_KEY(type, i).volNo;
+
+            e = edubfm_FlushTrain(trainId, type);
+            if (e < 0) ERR ( e );
+        }
+        i++;
+    }
 
     return( eNOERROR );
     
