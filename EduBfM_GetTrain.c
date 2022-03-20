@@ -110,7 +110,7 @@ Four EduBfM_GetTrain(
     /* page/train to be fixed exists in bufferPool */
     index = e;
     BI_FIXED(type, index)++;
-    BI_FIXED(type, index) = REFER;
+    BI_FIXED(type, index) |= REFER;
 
     *retBuf = BI_BUFFER(type, index);
 
