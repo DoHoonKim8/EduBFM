@@ -136,7 +136,7 @@ Four edubfm_Delete(
     prev = NIL;
     if (i == NIL) ERR( eNOTFOUND_BFM );
     
-    while (i) {
+    while (i != NIL) {
         if (EQUALKEY(&BI_KEY(type, i), key)) break;
         prev = i;
         i = BI_NEXTHASHENTRY(type, i);
@@ -184,7 +184,7 @@ Four edubfm_LookUp(
     hashValue = BFM_HASH(key, type);
 
     i = BI_HASHTABLEENTRY(type, hashValue);
-    while (i) { // until the next hash entry is empty
+    while (i != NIL) { // until the next hash entry is empty
         if (EQUALKEY(&BI_KEY(type, i), key)) {
             return i;
         }
@@ -217,7 +217,23 @@ Four edubfm_DeleteAll(void)
     Two 	i;
     Four        tableSize;
     
+    /* page buf hash table */
+    tableSize = HASHTABLESIZE(PAGE_BUF);
+    i = 0;
+    while (1) {
+        if (i == tableSize) break;
+        BI_HASHTABLEENTRY(PAGE_BUF, i) = NIL;
+        i++;
+    }
 
+    /* lot leaf buf hash table */
+    tableSize = HASHTABLESIZE(LOT_LEAF_BUF);
+    i = 0;
+    while (1) {
+        if (i == tableSize) break;
+        BI_HASHTABLEENTRY(LOT_LEAF_BUF, i) = NIL;
+        i++;
+    }
 
     return(eNOERROR);
 
