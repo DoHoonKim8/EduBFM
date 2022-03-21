@@ -78,8 +78,7 @@ Four edubfm_FlushTrain(
     index = e;
 
     if (BI_BITS(type, index) & DIRTY) {
-        char* bufPtr = BI_BUFFER(type, index);
-        e = RDsM_WriteTrain(bufPtr, trainId, BI_BUFSIZE(type));
+        e = RDsM_WriteTrain(BI_BUFFER(type, index), trainId, BI_BUFSIZE(type));
         if (e < 0) ERR(e);
         BI_BITS(type, index) ^= DIRTY;
     }

@@ -63,12 +63,8 @@ Four EduBfM_FlushAll(void)
     type = PAGE_BUF;
     i = 0;
     while (i < BI_NBUFS(type)) {
-        if (BI_BITS(type, i) & DIRTY) {
-            TrainID* trainId;
-            trainId->pageNo = BI_KEY(type, i).pageNo;
-            trainId->volNo = BI_KEY(type, i).volNo;
-        
-            e = edubfm_FlushTrain(trainId, type);
+        if (BI_BITS(type, i) & DIRTY) {        
+            e = edubfm_FlushTrain(&BI_KEY(type, i), type);
             if (e < 0) ERR( e );
         }
         i++;
@@ -78,11 +74,7 @@ Four EduBfM_FlushAll(void)
     i = 0;
     while (i < BI_NBUFS(type)) {
         if (BI_BITS(type, i) & DIRTY) {
-            TrainID* trainId;
-            trainId->pageNo = BI_KEY(type, i).pageNo;
-            trainId->volNo = BI_KEY(type, i).volNo;
-
-            e = edubfm_FlushTrain(trainId, type);
+            e = edubfm_FlushTrain(&BI_KEY(type, i), type);
             if (e < 0) ERR ( e );
         }
         i++;
